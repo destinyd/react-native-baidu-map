@@ -35,7 +35,7 @@ public class MarkerUtil {
             case "marker_self":
                 bitmap = bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.marker_self);
                 break;
-            case "marker_self":
+            default:
                 bitmap = bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
                 break;
         }
