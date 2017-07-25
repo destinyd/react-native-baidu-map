@@ -107,24 +107,35 @@ public class GeolocationModule extends BaseModule
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         WritableMap params = Arguments.createMap();
-        params.putDouble("latitude", bdLocation.getLatitude());
-        params.putDouble("longitude", bdLocation.getLongitude());
-        params.putDouble("direction", bdLocation.getDirection());
-        params.putDouble("altitude", bdLocation.getAltitude());
-        params.putDouble("radius", bdLocation.getRadius());
-        params.putString("address", bdLocation.getAddrStr());
-        params.putString("countryCode", bdLocation.getCountryCode());
-        params.putString("country", bdLocation.getCountry());
-        params.putString("province", bdLocation.getProvince());
-        params.putString("cityCode", bdLocation.getCityCode());
-        params.putString("city", bdLocation.getCity());
-        params.putString("district", bdLocation.getDistrict());
-        params.putString("street", bdLocation.getStreet());
-        params.putString("streetNumber", bdLocation.getStreetNumber());
-        params.putString("buildingId", bdLocation.getBuildingID());
-        params.putString("buildingName", bdLocation.getBuildingName());
-        Log.i("onReceiveLocation", "onGetCurrentLocationPosition");
-        sendEvent("onGetCurrentLocationPosition", params);
+        if(location.getLocType() == BDLocation.TypeServerError){
+            params.putString("error", "服务端网络定位失败");
+            sendEvent("onGetCurrentLocationPosition", params);
+        } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+            params.putString("error", "网络不同导致定位失败，请检查网络是否通畅");
+            sendEvent("onGetCurrentLocationPosition", params);
+        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+            params.putString("error", "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+            sendEvent("onGetCurrentLocationPosition", params);
+        } else {
+            params.putDouble("latitude", bdLocation.getLatitude());
+            params.putDouble("longitude", bdLocation.getLongitude());
+            params.putDouble("direction", bdLocation.getDirection());
+            params.putDouble("altitude", bdLocation.getAltitude());
+            params.putDouble("radius", bdLocation.getRadius());
+            params.putString("address", bdLocation.getAddrStr());
+            params.putString("countryCode", bdLocation.getCountryCode());
+            params.putString("country", bdLocation.getCountry());
+            params.putString("province", bdLocation.getProvince());
+            params.putString("cityCode", bdLocation.getCityCode());
+            params.putString("city", bdLocation.getCity());
+            params.putString("district", bdLocation.getDistrict());
+            params.putString("street", bdLocation.getStreet());
+            params.putString("streetNumber", bdLocation.getStreetNumber());
+            params.putString("buildingId", bdLocation.getBuildingID());
+            params.putString("buildingName", bdLocation.getBuildingName());
+            Log.i("onReceiveLocation", "onGetCurrentLocationPosition");
+            sendEvent("onGetCurrentLocationPosition", params);
+        }
         locationClient.stop();
     }
 

@@ -92,7 +92,11 @@ export default {
         return;
       }
       DeviceEventEmitter.once('onGetCurrentLocationPosition', resp => {
-        resolve(resp);
+        if(resp && resp.error){
+          reject(resp.error);
+        } else {
+          resolve(resp);
+        }
       });
     });
   }
