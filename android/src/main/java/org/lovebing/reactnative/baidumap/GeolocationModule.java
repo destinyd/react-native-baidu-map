@@ -107,6 +107,7 @@ public class GeolocationModule extends BaseModule
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         WritableMap params = Arguments.createMap();
+        if(bdLocation.getLocType() == BDLocation.TypeServerError){
             params.putString("error", "服务端网络定位失败");
             sendEvent("onGetCurrentLocationPosition", params);
         } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkException) {
