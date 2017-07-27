@@ -107,13 +107,13 @@ public class GeolocationModule extends BaseModule
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
         WritableMap params = Arguments.createMap();
-        if(location.getLocType() == BDLocation.TypeServerError){
+        if(bdLocation.getLocType() == BDLocation.TypeServerError){
             params.putString("error", "服务端网络定位失败");
             sendEvent("onGetCurrentLocationPosition", params);
-        } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+        } else if (bdLocation.getLocType() == BDLocation.TypeNetWorkException) {
             params.putString("error", "网络不同导致定位失败，请检查网络是否通畅");
             sendEvent("onGetCurrentLocationPosition", params);
-        } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+        } else if (bdLocation.getLocType() == BDLocation.TypeCriteriaException) {
             params.putString("error", "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
             sendEvent("onGetCurrentLocationPosition", params);
         } else {
